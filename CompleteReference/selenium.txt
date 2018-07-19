@@ -86,7 +86,7 @@ public class BrowserTitle
 }
 
 
-=============================================================================================
+==================================================================
 LOCATORS - We have 8 locators in selenium
 
 
@@ -102,7 +102,7 @@ WebElement ele = driver.findElementById("q")
 id is the most preferred locator as it is always unique.
 xpath is used when other locators are not available.
 
-============================================================================================
+===================================================================
 
 WAITS - 3 waits (Implicit, Explicit, Fluentwait)
 
@@ -144,7 +144,7 @@ Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 
 withTimeout & pollingEvery methods are deprecated in the new selenium version.
 
-=============================================================================================================
+====================================================================
 FRAMES 
 
 - We can't say if the page has frames just by looking. Right click on the location, you will see an option 'this frame'
@@ -180,7 +180,7 @@ If we want to switch back to the main frame
 driver.switchTo().parentFrame();
 driver.switchTo().defaultContent();
 
-==============================================================================================================
+=======================================================================
 WINDOW - Sometimes browser will open another browser and we need to perform action. This is called window handle
 
 getWindowHandles is a method in RemoteWebDriver class
@@ -208,7 +208,7 @@ String secwin = listwindow.get(1);
 driver.switchTo().window(secwin);
 
 
-=================================================================================================================
+===========================================================================
 ALERT - A message box that requires user input to proceed further
 
 Alert is a method in WebDriverTargetLocator class
@@ -219,7 +219,7 @@ driver.switchTo().alert().dismiss();
 driver.switchTo().alert().sendKeys("hello")
 String text1=driver.switchTo().alert().getText();
 
-================================================================================================================
+=============================================================================
 
 BROWSER POP UP
 
@@ -229,7 +229,7 @@ op.addArguments("--disable-notifications");
 				
 ChromeDriver driver = new ChromeDriver(op);
 
-======================================================================================================
+=============================================================================
 EXCEPTIONS
 
 An Exception is an event, which occurs during the execution of a program that disrupts the normal flow of the program’s 
@@ -237,16 +237,31 @@ instructions or in simple words, any issue which makes your test case stop in be
 
 We have 11 common selenium exceptions
 
-1. ElementNotVisibleException: Although an element is present in the DOM, it is not visible (cannot be interacted with). E.g. Hidden Elements – defined in HTML using type=”hidden”.
+1. ElementNotVisibleException: Although an element is present in the DOM, 
+			       it is not visible (cannot be interacted with). 
+			       E.g. Hidden Elements – defined in HTML using type=”hidden”.
 2. ElementNotSelectableException: Although an element is present in the DOM, it may be disabled (cannot be clicked/selected).
-3. InvalidSelectorException: Selector used to find an element does not return a WebElement. Say XPath expression is used which is either syntactically invalid or does not select WebElement.
+
+3. InvalidSelectorException: Selector used to find an element does not return a WebElement. 
+                             Say XPath expression is used which is either syntactically invalid or 
+                             does not select WebElement.
+
 4. NoSuchElementException: WebDriver is unable to identify the elements during run time, i.e. FindBy method can’t find the element.
+
 5. NoSuchFrameException: WebDriver is switching to an invalid frame, which is not available.
+
 6. NoAlertPresentException: WebDriver is switching to an invalid alert, which is not available.
+
 7. NoSuchWindowException: WebDriver is switching to an invalid window, which is not available.
-8. StaleElementReferenceException: The referenced element is no longer present on the DOM page (reference to an element is now Stale). E.g. The Element belongs to a different frame than the current one OR the user has navigated away to another page.
+
+8. StaleElementReferenceException: The referenced element is no longer present on the DOM page (reference to an element is now Stale). 
+				   E.g. The Element belongs to a different frame than the current one OR the user has navigated away to another page.
+
 9. SessionNotFoundException: The WebDriver is performing the action immediately after ‘quitting’ the browser.
-10. TimeoutException: The command did not complete in enough time. E.g. the element didn’t display in the specified time. Encountered when working with waits.
+
+10. TimeoutException: The command did not complete in enough time. 
+                      E.g. the element didn’t display in the specified time. Encountered when working with waits.
+
 11. WebDriverException: The WebDriver is performing the action immediately after ‘closing’ the browser.
 
 
@@ -276,7 +291,7 @@ Runtime Exception(class) ---> extends ----> Exception (class)
 Exception(class) ---> extends ----> Throwable (class)
 Throwable -----> Implements -----> Serializable (interface)
 
-========================================================================================================================================
+============================================================================
 
 WEBTABLE  - A table having rows and columns on webpage (2 types - static & dynamic)
 
@@ -302,7 +317,7 @@ for (int i =1;i<rows.size();i++)
 }
 
 
-=======================================================================================================================================
+===========================================================================
 
 XPATH LOCATOR - xml path.
 
@@ -364,7 +379,7 @@ Xpath =//*[@type='password']//self::input
 8.Descendant: Selects the descendants of the current node 
 Xpath=//*[@id='rt-feature']//descendant::a
 
-==========================================================================================================================================
+===============================================================================
 Extent Report
 
 A reporting tool from avenstack. version 3.1.5
@@ -385,7 +400,7 @@ test.assignCategory("Smoke Testing");
 test.assignAuthor("Biswajit Sundara");
 
 
-==========================================================================================================================================
+=============================================================================
 TAKING SNAPSHOT
 
 File src=driver.getScreenshotAs(OutputType.FILE);
@@ -393,7 +408,7 @@ File dest=new File("./snaps/img.png");
 FileUtils.copyFile(src, dest);
 
 
-=========================================================================================================================================
+=============================================================================
 PROPERTIES
 
 //Create properties object
@@ -414,7 +429,7 @@ System.out.println(key + ":- " + value);
 }
 
 
-========================================================================================================================================
+==============================================================================
 ADVANCED USER INTERACTIONS
 
 //Actions is the class
@@ -457,7 +472,7 @@ Action dragdrop= builder.dragAndDrop(draggable, droppable).build();
 dragdrop.perform();
 
 
-===========================================================================================================================================
+=====================================================================================
 
 READ EXCEL
 
@@ -484,6 +499,177 @@ for (int i=1; i<=lastRowNum; i++)
 wbook.close();
 
 
-==========================================================================================================================================
+=======================================================================================
+
+TestNG - Testing framework
+
+It will be run from xml file always
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test thread-count="5" name="Test">
+    <classes>
+      <class name="testcases.f1"/>
+      <class name="testcases.f2"/>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test thread-count="5" name="Test1">
+    <classes>
+      <class name="testcases.f3"/>
+      <class name="testcases.f4"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
+
+Hierarchy
+
+Before Suite
+Before Test
+Before Class
+Before Method
+@Test
+After Method
+After Class
+After Test
+After Suite
+
+
+@Test(dependsOnMethods="fun1") - Will depend on method fun1
+@Test(alwaysRun=true) - Always runs
+@Test(groups={"Smoke"}) - Will execute if the group smoke is included in xml file.
+@Test(groups="Regression", dependsOnGroups= {"Smoke"} ) - Regression group will depend on smoke group
+@Test(expectedExceptions=ArithmeticException.class) 
+@Parameters({ "username", "password" }) - The user name and password can be passed from xml using this approach.
+@Test(priority=0) - Will execute based on the priority. If this is not set, it will be executed based on alphabetic order of class files
+@Test(invocationCount=2,successPercentage=50)
+
+
+============================================================================================
+Cucumber
+
+3 files (feature, runner, steps)
+
+Feature file is written in Gherkin language
+-------------------------------------------
+Feature: Create Lead (Positive)
+#Background:
+#Given Login into Leaftaps(Positive)
+Scenario Outline: Create Lead
+Given Navigate to create lead Page
+And Enter the Company Name <compname>
+And Enter the First Name <firstname>
+And Enter the Last Name <lastname>
+When click on create lead
+Then Verify the create lead is success
+Examples:
+|compname|firstname|lastname|
+|TCS|Trisha|Kanan|
+|CTS|Kajol|Agarwal|
+|Alight|Biswajit|Sundara|
+
+
+Runner File
+-------------
+package runner;
+
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features="src/test/java/features/createlead.feature", glue="steps" , monochrome=true)
+
+public class CreateLeadRunner
+{
+	
+}
+
+
+Steps file
+------------
+public static RemoteWebDriver driver;
+
+	@Given("Navigate to create lead Page")
+	public static void navCreatelead()
+	{
+		System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+		driver= new ChromeDriver();
+		driver.manage().window().maximize();
+
+		//open the web site
+		driver.get("http://leaftaps.com/opentaps");
+		String uName="DemoSalesManager";
+		driver.findElementById("username").sendKeys(uName);
+		String pwd="crmsfa";
+		driver.findElementById("password").sendKeys(pwd);
+		driver.findElementByClassName("decorativeSubmit").click();
+		driver.findElementByLinkText("CRM/SFA").click();
+		driver.findElementByLinkText("Leads").click();
+		driver.findElementByLinkText("Create Lead").click();
+		
+	}
+	
+	@And("Enter the Company Name (.*)")
+	public static void entercname(String cny)
+	{
+		String cnyvalue=cny;
+		WebElement cname = driver.findElementByXPath("(//input[@name='companyName'])[2]");
+		cname.sendKeys(cnyvalue);
+		
+	}
+	
+	@And("Enter the First Name (.*)")
+	public static void enterfname(String frstnme)
+	{
+		String frstnmevalue=frstnme;
+		WebElement fname = driver.findElementByXPath("(//input[@name='firstName'])[3]");
+		fname.sendKeys(frstnmevalue);
+		
+	}
+	
+	@And("Enter the Last Name (.*)")
+	public static void enterlname(String lstname)
+	{
+		String lstnamevalue=lstname;
+		WebElement lname = driver.findElementByXPath("(//input[@name='lastName'])[3]");
+		lname.sendKeys(lstnamevalue);
+		
+	}
+	
+	@When("click on create lead")
+	public static void createlead()
+	{
+		WebElement clead = driver.findElementByName("submitButton");
+		clead.click();
+		
+	}
+	
+	@Then("Verify the create lead is success")
+	public static void verifylead()
+	{
+		WebElement leadname = driver.findElementById("viewLead_firstName_sp");
+		System.out.println(leadname.getText()+" is created successfully");
+		
+	}
+
+
+
+Keywords
+---------
+1. Feature
+2. Scenario
+3. Scenario Outline
+3. Background
+4. Given
+4. Then
+5. When
+6. And
+7. But --negative conditions
+
+
+===================================================================================================
 
 
