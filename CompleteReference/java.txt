@@ -1,0 +1,271 @@
+BASIC PROGRAM
+
+package corejava.concepts.basics;
+
+public class HelloWorld 
+{
+	public static void main(String[] args) 
+        {
+		System.out.println("Hello World");
+	}
+}
+
+class  : keyword is used to declare a class in java.
+
+public : is an Access Modifier, which defines who can access this Method. 
+         Public means that this Method will be accessible everywhere, by other classes.
+
+static : is a keyword which identifies the class related thing. 
+         This means the given Method or variable is not instance related but Class related. 
+         It can be accessed without creating the instance of a Class.
+
+void : is used to define the Return Type of the Method. 
+       It defines what the method can return. 
+       Void means the Method will not return any value.
+	
+main: is the name of the Method. 
+      This Method name is searched by JVM as a starting point for an application 
+      with a particular signature only.
+
+String args[] : is the parameter to the main Method.
+
+
+Question- Can we have multiple main() methods in java?
+The answer is yes but the parameter needs to be different.
+
+Not possible
+public static void main(String[] args){}
+public static void main(String[] args){}
+
+Possible
+public static void main(String[] args){}
+public static void main(int i){}
+
+public static void main(String[] args){} - Will be recognized as the main method by JVM always.
+
+
+=================================================================================================
+
+System is a class = public final class System{} 
+out is a variable = public final static PrintStream out = null;
+println is a method in System class
+
+public void println(String x) {
+        synchronized (this) {
+            print(x);
+            newLine();
+        }
+    }
+
+================================================================================================
+CREATING OBJECTS IN JAVA
+
+We can create object in 5 different ways
+
+1. Using 'new' keyword
+NewKeywordExample obj = new NewKeywordExample();
+System.out.println(obj.name);
+
+
+2. Using 'newInstance' keyword
+MyAppClass appObj = (MyAppClass)sampleObj.newInstance(); 
+System.out.println(obj.name);
+
+
+3. Using clone() method: 
+CloneExample obj1 = new CloneExample();
+CloneExample obj2 = (CloneExample) obj1.clone();
+System.out.println(obj2.name);
+
+4. Class.forName() : / Reflection 
+This approach is also known as way of creating an object using reflection API. 
+This simply returns the Class object associated with the class given. 
+Commonly used in JDBC connection. 
+SampleClass sampleObj = Class.forName("SampleClass") 
+
+5. Using object serialization 
+ObjectInputStream inStream = new ObjectInputStream(anInputStream ); 
+MyObject object = (MyObject) inStream.readObject();
+
+
+
+====================================================================================================
+ABSTRACT CLASS 
+
+A class that is declared with abstract keyword, 
+is known as abstract class in java. 
+It can have abstract and non-abstract methods (method with body).
+
+abstract class Bank
+{    
+   abstract int getRateOfInterest();    
+}  
+
+class SBI extends Bank
+{    
+int getRateOfInterest(){return 7;}    
+}    
+
+class PNB extends Bank
+{    
+int getRateOfInterest(){return 8;}    
+}     
+
+class TestBank
+{    
+public static void main(String args[]){    
+Bank b;  
+b=new SBI();  
+System.out.println("Rate of Interest is: "+b.getRateOfInterest()+" %");    
+b=new PNB();  
+System.out.println("Rate of Interest is: "+b.getRateOfInterest()+" %");    
+}}     
+
+
+
+=================================================================================================
+
+SUPER KEYWORD
+
+The super keyword in java is a reference variable which is used to refer immediate parent class object.
+
+class Animal
+{  
+  String color="white";  
+}  
+
+class Dog extends Animal
+{  
+        String color="black";  
+	void printColor()
+	{  
+	System.out.println(color);//prints color of Dog class  
+	System.out.println(super.color);//prints color of Animal class  
+	}  
+}  
+
+class TestSuper1
+{  
+   public static void main(String args[])
+    {  
+       Dog d=new Dog();  
+       d.printColor();  
+    }
+}  
+
+
+======================================================================================================
+
+ENUM KEYWORD
+
+Enum in java is a data type that contains fixed set of constants.
+
+It can be used for days of the week (SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY and SATURDAY) , 
+directions (NORTH, SOUTH, EAST and WEST) etc. 
+The java enum constants are static and final implicitly. It is available from JDK 1.5.
+
+
+class EnumExample1
+{  
+	public enum Season 
+        { WINTER, SPRING, SUMMER, FALL }  
+  
+	public static void main(String[] args) 
+	{  
+		for (Season s : Season.values())  
+		System.out.println(s);  
+  	}
+}  
+
+======================================================================================================
+
+THIS keyword
+
+There can be a lot of usage of java this keyword. 
+In java, this is a reference variable that refers to the current object.
+
+
+class Student
+{  
+	int rollno;  
+	String name;  
+	float fee;  
+	Student(int rollno,String name,float fee)
+	{  
+	this.rollno=rollno;  
+	this.name=name;  
+	this.fee=fee;  
+	}  
+	void display()
+	{
+	System.out.println(rollno+" "+name+" "+fee);
+	}  
+}  
+  
+class TestThis2
+{  
+	public static void main(String args[])
+	{  
+		Student s1=new Student(111,"ankit",5000f);  
+		Student s2=new Student(112,"sumit",6000f);  
+		s1.display();  
+		s2.display();  
+	}
+}  
+
+In the above example, parameters (formal arguments) and instance variables are same. 
+So, we are using this keyword to distinguish local variable and instance variable.
+
+
+============================================================================================
+
+FINAL keyword
+
+The final keyword in java is used to restrict the user. 
+The java final keyword can be used in many context. Final can be:
+variable
+method
+class
+
+//Final Variable Demo
+class Bike9{  
+ final int speedlimit=90;//final variable  
+ void run(){  
+  speedlimit=400;  
+ }  
+ public static void main(String args[]){  
+ Bike9 obj=new  Bike9();  
+ obj.run();  
+ }  
+}//end of class  
+OUTPUT - Compile error as final variable can't be overriden
+
+
+//Final Method Demo
+class Bike{  
+  final void run(){System.out.println("running");}  
+}  
+     
+class Honda extends Bike{  
+   void run(){System.out.println("running safely with 100kmph");}  
+     
+   public static void main(String args[]){  
+   Honda honda= new Honda();  
+   honda.run();  
+   }  
+}  
+OUTPUT - Compile error as final method can't be overriden
+
+
+//Final Class Demo
+final class Bike{}  
+  
+class Honda1 extends Bike{  
+  void run(){System.out.println("running safely with 100kmph");}  
+    
+  public static void main(String args[]){  
+  Honda1 honda= new Honda1();  
+  honda.run();  
+  }  
+}  
+OUTPUT - Compile error as final class can't be extended

@@ -1,0 +1,489 @@
+//@author-Biswajit Sundara
+//@date- 07/17/2018
+//@desc- This is a basic program of selenium
+//The code opens google.com, searches for selenium and clicks on a link
+//Then verifies if the browser title matches with expected value.
+//@codeverified - Yes
+
+
+package selenium.concepts.basics;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class BrowserTitle
+{
+
+	public static void main(String[] args)
+	{
+
+
+		//System is a class and set property is the method
+		//static String setProperty(String key, String value)
+		//return (String) props.setProperty(key, value);
+		System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+
+		//ChromeDriver is the class that extends RemoteWebDriver
+		//Here we are creating a new instance of ChromeDriver class
+		//public class ChromeDriver extends RemoteWebDriver
+		ChromeDriver driver = new ChromeDriver();
+
+		//get is a method available in RemoteWebDriver
+		//public void get(String url)
+		//Doesn't return anything, it executes
+		driver.get("http://www.google.com");
+
+		//manage is a method in RemoteWebDriver class
+		//public Options manage()
+		//return new RemoteWebDriverOptions();
+		driver.manage().window().maximize();
+
+
+		//WebElement is an interface
+		//findElementById is a method in RemoteWebDriver
+		//public WebElement findElementById(String using)
+		//return findElement("id", using);
+		WebElement search = driver.findElementById("lst-ib");
+
+		//sendKeys is a method
+		//void sendKeys(CharSequence... keysToSend);
+		search.sendKeys("Selenium", Keys.ENTER);
+
+		//findElementByLinkText is a method in RemoteWebDriver
+		//public WebElement findElementByLinkText(String using) {
+		//return findElement("link text", using);
+		driver.findElementByLinkText("Selenium - Web Browser Automation").click();
+
+		//expectedtitle is a variable of string type.
+		//actualtitle is a variable of string type.
+		String expectedtitle="Selenium - Web Browser Automation";
+		String actualtitle="";
+
+		//gettitle is a method in RemoteWebDriver class
+		//public String getTitle()
+		//Returns value.toString(); or null
+		actualtitle= driver.getTitle();
+
+		//compares if the actual title matches with expected title
+		if (actualtitle.contentEquals(expectedtitle))
+		{
+			System.out.println("Test Passed!");
+		}
+		else
+		{
+			System.out.println("Test Failed");
+		}
+
+
+		//close browser
+		//This is a method in RemoteWebDriver
+		//void close()
+		//execute(DriverCommand.CLOSE);
+		driver.close();
+
+	}
+
+}
+
+
+=============================================================================================
+LOCATORS - We have 8 locators in selenium
+
+
+WebElement ele = driver.findElementById("q")
+                 driver.findElementByName(using)
+		 driver.findElementByClassName(using)
+		 driver.findElementByLinkText(using)
+                 driver.findElementByPartialLinkText(using)
+		 driver.findElementByTagName("a");
+		 driver.findElementByXPath(using)
+		 driver.findElementByCssSelector(using)
+
+id is the most preferred locator as it is always unique.
+xpath is used when other locators are not available.
+
+============================================================================================
+
+WAITS - 3 waits (Implicit, Explicit, Fluentwait)
+
+//Implicit wait
+//The implicit wait will tell to the web driver to wait for certain amount of time before it throws a "No Such Element Exception". 
+//The default setting is 0. Once we set the time, web driver will wait for that time before throwing an exception.
+//Timeouts is the interface & implicitwait is the method
+//This is in Webdriver$timeout class
+//Timeouts implicitlyWait(long time, TimeUnit unit);
+driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS) ;
+
+
+
+//Set the webdriver wait
+//The explicit wait is used to tell the Web Driver to wait for certain conditions (Expected Conditions) 
+//or the maximum time exceeded before throwing an "ElementNotVisibleException" exception.
+//WebDriverWait is a class extends FluentWait class
+//public class WebDriverWait extends FluentWait<WebDriver>
+//WeDriverWait() is the constructor with two arguments
+//public WebDriverWait(WebDriver driver, long timeOutInSeconds)
+WebDriverWait wait=new WebDriverWait(driver, 20);
+
+WebElement ele = driver.findElementByXPath("//a[text()='Insurance Project']");
+wait.until(ExpectedConditions.elementToBeClickable(ele));
+ele.click();
+
+
+
+
+//Fluent Wait
+//The fluent wait is used to tell the web driver to wait for a condition, 
+//as well as the frequency with which we want to check the condition before throwing an "ElementNotVisibleException" exception.
+// Waiting 30 seconds for an element to be present on the page, checking
+// for its presence once every 5 seconds.
+Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+		      //.withTimeout(30, TimeUnit.SECONDS)
+		      //.pollingEvery(5, TimeUnit.SECONDS)
+		        .ignoring(NoSuchElementException.class);
+
+withTimeout & pollingEvery methods are deprecated in the new selenium version.
+
+=============================================================================================================
+FRAMES 
+
+- We can't say if the page has frames just by looking. Right click on the location, you will see an option 'this frame'
+- Or View the page source code and search - frame, iframe etc.
+
+- First we have to switch to the frame and then take action.
+
+- SwitchTo() is a method of return type TargetLOcator. In class RemoteWebDriver
+public TargetLocator switchTo() {
+    return new RemoteTargetLocator();
+  }
+
+- WebDriver frame(WebElement frameElement);
+  WebDriver frame(String nameOrId);
+  WebDriver frame(int index);
+  WebDriver parentFrame();
+
+//frame using webelement
+WebElement frame1 = driver.findElementById("iframeResult");
+driver.switchTo().frame(frame1);
+driver.findelement....etc
+
+//frame using index. Here it's zero
+driver.switchTo().frame(0);
+driver.findelement....etc
+
+//frame using name or id. Here id is = iframeResult
+driver.switchTo().frame("iframeResult");
+driver.findelement....etc
+
+
+If we want to switch back to the main frame
+driver.switchTo().parentFrame();
+driver.switchTo().defaultContent();
+
+==============================================================================================================
+WINDOW - Sometimes browser will open another browser and we need to perform action. This is called window handle
+
+getWindowHandles is a method in RemoteWebDriver class
+The return type is Set<String>
+public Set<String> getWindowHandles()
+
+- Window() is a method
+WebDriver window(String nameOrHandle);
+
+
+//First we are getting all the window handles and storing in set Allwindow
+Set<String> Allwindow = driver.getWindowHandles();
+
+//We are creating a list, adding all the windows from the set
+List<String> listwindow = new ArrayList<String>();
+listwindow.addAll(Allwindow);
+
+//Checking the size or the number of window handles
+int size = listwindow.size();
+System.out.println("The number of windows =" +size);
+    
+//extracting the window handle string from the list
+//using the string switching the driver 
+String secwin = listwindow.get(1);
+driver.switchTo().window(secwin);
+
+
+=================================================================================================================
+ALERT - A message box that requires user input to proceed further
+
+Alert is a method in WebDriverTargetLocator class
+Alert alert();
+
+driver.switchTo().alert().accept
+driver.switchTo().alert().dismiss();
+driver.switchTo().alert().sendKeys("hello")
+String text1=driver.switchTo().alert().getText();
+
+================================================================================================================
+
+BROWSER POP UP
+
+//Browser options
+ChromeOptions op=new ChromeOptions();
+op.addArguments("--disable-notifications");
+				
+ChromeDriver driver = new ChromeDriver(op);
+
+======================================================================================================
+EXCEPTIONS
+
+An Exception is an event, which occurs during the execution of a program that disrupts the normal flow of the program’s 
+instructions or in simple words, any issue which makes your test case stop in between the execution.”
+
+We have 11 common selenium exceptions
+
+1. ElementNotVisibleException: Although an element is present in the DOM, it is not visible (cannot be interacted with). E.g. Hidden Elements – defined in HTML using type=”hidden”.
+2. ElementNotSelectableException: Although an element is present in the DOM, it may be disabled (cannot be clicked/selected).
+3. InvalidSelectorException: Selector used to find an element does not return a WebElement. Say XPath expression is used which is either syntactically invalid or does not select WebElement.
+4. NoSuchElementException: WebDriver is unable to identify the elements during run time, i.e. FindBy method can’t find the element.
+5. NoSuchFrameException: WebDriver is switching to an invalid frame, which is not available.
+6. NoAlertPresentException: WebDriver is switching to an invalid alert, which is not available.
+7. NoSuchWindowException: WebDriver is switching to an invalid window, which is not available.
+8. StaleElementReferenceException: The referenced element is no longer present on the DOM page (reference to an element is now Stale). E.g. The Element belongs to a different frame than the current one OR the user has navigated away to another page.
+9. SessionNotFoundException: The WebDriver is performing the action immediately after ‘quitting’ the browser.
+10. TimeoutException: The command did not complete in enough time. E.g. the element didn’t display in the specified time. Encountered when working with waits.
+11. WebDriverException: The WebDriver is performing the action immediately after ‘closing’ the browser.
+
+
+We can handle exceptions using try-catch
+
+try{
+// Some code
+}
+
+catch(Exception e){
+// Code for Handling the exception
+}
+
+Below methods can be used to display Exception information:
+printStackTrace(): prints the stack trace , exception name and description.
+toString(): returns a text message describing the exception name and description.
+getMessage(): displays the description of exception
+
+
+
+Hierarchy goes as below.
+
+NoSuchElementException (class) ----> extends ---> NotFoundException (class)
+NotFoundException (class) ---> extends ---> WebDriverException(class)
+WebDriverException(class) ---> extends ----> RunTimeException (class)
+Runtime Exception(class) ---> extends ----> Exception (class)
+Exception(class) ---> extends ----> Throwable (class)
+Throwable -----> Implements -----> Serializable (interface)
+
+========================================================================================================================================
+
+WEBTABLE  - A table having rows and columns on webpage (2 types - static & dynamic)
+
+
+
+//No. of Columns
+List  col = driver.findElements(By.xpath(".//*[@id='leftcontainer']/table/thead/tr/th"));
+System.out.println("Total No of columns are : " +col.size());
+		
+//No.of rows
+List  rows = driver.findElements(By.xpath (".//*[@id='leftcontainer']/table/tbody/tr/td[1]"));
+System.out.println("Total No of rows are : " + rows.size());
+
+
+for (int i =1;i<rows.size();i++)
+{    
+	max= driver.findElement(By.xpath("html/body/div[1]/div[5]/table/tbody/tr[" + (i+1)+ "]/td[4]")).getText();
+	NumberFormat f =NumberFormat.getNumberInstance(); 
+	Number num = f.parse(max);
+	max = num.toString();
+	m = Double.parseDouble(max);
+		
+}
+
+
+=======================================================================================================================================
+
+XPATH LOCATOR - xml path.
+
+-Absolute (direct way to locate element, starting from the html tag till the node)
+-Relative
+
+
+Relative X paths
+
+1. Basic xpath
+//tag name[@type='']
+//input[@name='uid']
+
+2.Contains 
+//*[contains(@type,'sub')]  
+Xpath=//*[contains(@href,'guru99.com')]	
+
+3. Using OR & AND
+Xpath=//*[@type='submit' OR @name='btnReset']
+
+4. Start-with function
+Xpath=//label[starts-with(@id,'message')]
+
+5. Text
+Xpath=//td[text()='UserID']	
+
+
+--------------------------
+X path axes
+
+1. Following: Selects all elements in the document of the current node( ) 
+Xpath=//*[@type='text']//following::input
+
+2. Ancestor:The ancestor axis selects all ancestors element (grandparent, parent, etc.) of the current node 
+Xpath=//*[text()='Enterprise Testing']//ancestor::div
+
+3. Child : Selects all children elements of the current node (Java) 
+Xpath=//*[@id='java_technologies']/child::li
+Xpath=//*[@id='java_technologies']/child::li[1]
+
+4. Preceding: Select all nodes that come before the current node 
+Xpath=//*[@type='submit']//preceding::input
+Xpath=//*[@type='submit']//preceding::input[1]
+
+5. Following-sibling:Select the following siblings of the context node. 
+Siblings are at the same level of the current node 
+It will find the element after the current node.
+
+ xpath=//*[@type='submit']//following-sibling::input
+
+6.Parent: Selects the parent of the current node 
+
+Xpath=//*[@id='rt-feature']//parent::div
+Xpath=//*[@id='rt-feature']//parent::div[1]
+
+7.Self: Selects the current node or 'self' means it indicates the node itself 
+Xpath =//*[@type='password']//self::input
+
+8.Descendant: Selects the descendants of the current node 
+Xpath=//*[@id='rt-feature']//descendant::a
+
+==========================================================================================================================================
+Extent Report
+
+A reporting tool from avenstack. version 3.1.5
+
+ExtentHtmlReporter html= new ExtentHtmlReporter("./Report/Result.html");
+html.setAppendExisting(true);
+
+ExtentReports extent = new ExtentReports();
+extent.attachReporter(html);
+		
+		
+ExtentTest test = extent.createTest("TC001_Create Lead", "Create a new lead in leaftaps");
+test.pass("The data DemoSalesManager entered successfully", MediaEntityBuilder.createScreenCaptureFromPath("./../snaps/img.png").build());
+test.fail("The Data crmsfa is not entered successfully");
+		
+extent.flush();
+test.assignCategory("Smoke Testing");
+test.assignAuthor("Biswajit Sundara");
+
+
+==========================================================================================================================================
+TAKING SNAPSHOT
+
+File src=driver.getScreenshotAs(OutputType.FILE);
+File dest=new File("./snaps/img.png");
+FileUtils.copyFile(src, dest);
+
+
+=========================================================================================================================================
+PROPERTIES
+
+//Create properties object
+Properties prop= new Properties();
+
+
+//Locate the file and load
+FileInputStream file1= new  FileInputStream("./src/main/java/propertiesdemo/config.properties");
+prop.load(file1);
+
+		
+//Print the file contents
+Enumeration KeyValues = prop.keys();
+while (KeyValues.hasMoreElements()) {
+String key = (String) KeyValues.nextElement();
+String value = prop.getProperty(key);
+System.out.println(key + ":- " + value);
+}
+
+
+========================================================================================================================================
+ADVANCED USER INTERACTIONS
+
+//Actions is the class
+//perform() is a method in actions class 
+//public void perform() {
+//build().perform();
+
+1. Selectable - Select Multiple Elements
+
+
+WebElement item1 = driver.findElementByXPath("//ol[@id='selectable']/li[1]");
+WebElement item2 = driver.findElementByXPath("//ol[@id='selectable']/li[2]");
+WebElement item3 = driver.findElementByXPath("//ol[@id='selectable']/li[3]");
+WebElement item5 = driver.findElementByXPath("//ol[@id='selectable']/li[5]");
+
+
+Actions builder = new Actions(driver);
+builder.keyDown(Keys.CONTROL).click(item1)
+		.click(item2)
+		.click(item3)
+		.click(item5)
+		.keyUp(Keys.CONTROL)
+		.perform();
+
+
+2. Draggable - Select an element, drag to a new location
+
+WebElement box1 = driver.findElementByXPath("//p[text()='Drag me around']");
+Actions builder= new Actions(driver);
+builder.dragAndDropBy(box1, 100, 100).perform();
+
+
+3. Drag and Drop
+
+WebElement draggable = driver.findElementById("draggable");
+WebElement droppable = driver.findElementById("droppable");
+
+Actions builder = new Actions(driver);
+Action dragdrop= builder.dragAndDrop(draggable, droppable).build();
+dragdrop.perform();
+
+
+===========================================================================================================================================
+
+READ EXCEL
+
+XSSFWorkbook wbook= new XSSFWorkbook("./data/TC001.xlsx");
+XSSFSheet sheet = wbook.getSheetAt(0);
+
+int lastRowNum = sheet.getLastRowNum();
+int lastCellNum= sheet.getRow(0).getLastCellNum();
+
+System.out.println("Row count= "+lastRowNum+" Column count="+lastCellNum);
+
+for (int i=1; i<=lastRowNum; i++)
+ {
+    XSSFRow row= sheet.getRow(i);
+
+    System.out.println("------------Row"+i+"----------");
+	for (int j=0; j<lastCellNum; j++)
+	  {
+		String value = row.getCell(j).getStringCellValue();
+		System.out.println(value);
+	}
+}
+
+wbook.close();
+
+
+==========================================================================================================================================
+
+
